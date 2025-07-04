@@ -20,10 +20,21 @@ public class HotelService {
     }
 
     public HotelDTO saveHotel(HotelDTO dto) {
+        log.info("Saving or updating hotel: {}", dto.getHotelName());
 
-        log.info("Saving hotel: {}", dto.getHotelName());
-        Hotel saved = hotelRepository.save(HotelMapper.toEntity(dto));
-        return HotelMapper.toDTO(saved);
+        Hotel existingHotel = hotelRepository.findById(dto.getHotelId()).orElse(null);
+
+        if (existingHotel != null) {
+            log.info("Hotel already exists. Updating existing hotel with ID: {}", dto.getHotelId());
+            existingHotel.setHotelName(dto.getHotelName());
+            existingHotel.setHotelAddress(dto.getHotelAddress());
+            Hotel updated = hotelRepository.save(existingHotel);
+            return HotelMapper.toDTO(updated);
+        } else {
+            log.info("Hotel does not exist. Creating new hotel with ID: {}", dto.getHotelId());
+            Hotel saved = hotelRepository.save(HotelMapper.toEntity(dto));
+            return HotelMapper.toDTO(saved);
+        }
     }
 
     public HotelDTO getHotel(Long id) {
