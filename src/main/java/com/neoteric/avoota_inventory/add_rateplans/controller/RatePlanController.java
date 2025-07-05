@@ -19,10 +19,10 @@ public class RatePlanController {
     private final RatePlanService ratePlanService;
 
     @PostMapping("/saveRatePlan")
-    public ResponseEntity<RatePlanDTO> createRatePlan(@RequestBody RatePlanDTO dto) {
+    public ResponseEntity<String> createRatePlan(@RequestBody RatePlanDTO dto) {
         log.info("POST /api/rateplans - Creating rate plan");
-        RatePlanDTO created = ratePlanService.addRatePlan(dto);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+
+        return  ratePlanService.addRatePlan(dto);
     }
 
     @GetMapping("/room/{roomId}")

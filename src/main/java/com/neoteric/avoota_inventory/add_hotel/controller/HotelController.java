@@ -1,6 +1,6 @@
 package com.neoteric.avoota_inventory.add_hotel.controller;
 
-import com.neoteric.avoota_inventory.add_hotel.entity.Hotel;
+import com.neoteric.avoota_inventory.add_hotel.entity.HotelEntity;
 import com.neoteric.avoota_inventory.add_hotel.model.HotelDTO;
 import com.neoteric.avoota_inventory.add_hotel.service.HotelService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +21,10 @@ public class HotelController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<HotelDTO> saveHotel(@RequestBody HotelDTO hotelDTO) {
+    public ResponseEntity<String> saveHotel(@RequestBody HotelDTO hotelDTO) {
         log.info("POST /api/hotels - saving hotel");
-        return ResponseEntity.ok(hotelService.saveHotel(hotelDTO));
+        hotelService.saveHotel(hotelDTO); // call the service method
+        return ResponseEntity.ok("Hotel saved successfully");
     }
 
     @GetMapping("/{id}")
@@ -39,7 +40,7 @@ public class HotelController {
     }
 
     @GetMapping("/hotels")
-    public List<Hotel> getAllHotels() {
+    public List<HotelEntity> getAllHotels() {
         return hotelService.getAllHotels();
     }
 }

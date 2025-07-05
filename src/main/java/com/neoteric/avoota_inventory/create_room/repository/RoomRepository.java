@@ -1,10 +1,16 @@
 package com.neoteric.avoota_inventory.create_room.repository;
 
-import com.neoteric.avoota_inventory.create_room.entity.Room;
+import com.neoteric.avoota_inventory.create_room.entity.RoomEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface RoomRepository extends JpaRepository<Room, Long> {
-    List<Room> findByHotelHotelId(Long hotelId);
+public interface RoomRepository extends JpaRepository<RoomEntity, Long> {
+    List<RoomEntity> findByHotelHotelId(Long hotelId);
+
+//    @Query("SELECT r FROM RoomEntity r JOIN FETCH r.hotel WHERE r.hotel.hotelId = :hotelId")
+//    List<RoomEntity> findAllByHotelIdWithHotel(@Param("hotelId") Long hotelId);
+
 }

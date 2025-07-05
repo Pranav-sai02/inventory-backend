@@ -1,12 +1,14 @@
 package com.neoteric.avoota_inventory.create_room.mapper;
 
-import com.neoteric.avoota_inventory.add_hotel.entity.Hotel;
-import com.neoteric.avoota_inventory.create_room.entity.Room;
+import com.neoteric.avoota_inventory.add_hotel.entity.HotelEntity;
+import com.neoteric.avoota_inventory.create_room.entity.RoomEntity;
 import com.neoteric.avoota_inventory.create_room.model.RoomDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RoomMapper {
-    public static Room toEntity(RoomDTO dto, Hotel hotel) {
-        return Room.builder()
+    public static RoomEntity toEntity(RoomDTO dto, HotelEntity hotel) {
+        return RoomEntity.builder()
                 .roomId(dto.getRoomId())
                 .roomType(dto.getRoomType())
                 .roomView(dto.getRoomView())
@@ -19,7 +21,7 @@ public class RoomMapper {
                 .build();
     }
 
-    public static RoomDTO toDTO(Room room) {
+    public static RoomDTO toDTO(RoomEntity room) {
         return RoomDTO.builder()
                 .roomId(room.getRoomId())
                 .roomType(room.getRoomType())

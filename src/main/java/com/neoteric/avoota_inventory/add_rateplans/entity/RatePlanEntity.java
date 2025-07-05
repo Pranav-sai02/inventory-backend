@@ -1,6 +1,6 @@
 package com.neoteric.avoota_inventory.add_rateplans.entity;
 
-import com.neoteric.avoota_inventory.create_room.entity.Room;
+import com.neoteric.avoota_inventory.create_room.entity.RoomEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RatePlan {
+public class RatePlanEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,5 +22,5 @@ public class RatePlan {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id", nullable = false)
-    private Room room;
+    private RoomEntity room;
 }

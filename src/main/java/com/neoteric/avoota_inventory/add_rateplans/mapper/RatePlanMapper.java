@@ -1,12 +1,14 @@
 package com.neoteric.avoota_inventory.add_rateplans.mapper;
 
-import com.neoteric.avoota_inventory.add_rateplans.entity.RatePlan;
+import com.neoteric.avoota_inventory.add_rateplans.entity.RatePlanEntity;
 import com.neoteric.avoota_inventory.add_rateplans.model.RatePlanDTO;
-import com.neoteric.avoota_inventory.create_room.entity.Room;
+import com.neoteric.avoota_inventory.create_room.entity.RoomEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RatePlanMapper {
-    public static RatePlan toEntity(RatePlanDTO dto, Room room) {
-        return RatePlan.builder()
+    public static RatePlanEntity toEntity(RatePlanDTO dto, RoomEntity room) {
+        return RatePlanEntity.builder()
                 .id(dto.getId())
                 .ratePlanName(dto.getRatePlanName())
                 .mealPlan(dto.getMealPlan())
@@ -14,7 +16,7 @@ public class RatePlanMapper {
                 .build();
     }
 
-    public static RatePlanDTO toDTO(RatePlan ratePlan) {
+    public static RatePlanDTO toDTO(RatePlanEntity ratePlan) {
         return RatePlanDTO.builder()
                 .id(ratePlan.getId())
                 .ratePlanName(ratePlan.getRatePlanName())

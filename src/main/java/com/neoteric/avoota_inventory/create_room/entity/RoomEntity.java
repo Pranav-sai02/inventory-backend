@@ -1,7 +1,8 @@
 package com.neoteric.avoota_inventory.create_room.entity;
 
 
-import com.neoteric.avoota_inventory.add_hotel.entity.Hotel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.neoteric.avoota_inventory.add_hotel.entity.HotelEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Room {
+public class RoomEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "room_id")
@@ -42,5 +43,6 @@ public class Room {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id", nullable = false)
-    private Hotel hotel;
+    @JsonBackReference
+    private HotelEntity hotel;
 }
