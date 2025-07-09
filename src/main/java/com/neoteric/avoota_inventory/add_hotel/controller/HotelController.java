@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/hotels")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 @Slf4j
 public class HotelController {
     private final HotelService hotelService;
@@ -40,7 +40,7 @@ public class HotelController {
     }
 
     @GetMapping("/hotels")
-    public List<HotelEntity> getAllHotels() {
+    public List<HotelDTO> getAllHotels() {
         return hotelService.getAllHotels();
     }
 }

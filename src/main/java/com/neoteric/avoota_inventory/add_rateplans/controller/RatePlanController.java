@@ -14,11 +14,11 @@ import java.util.List;
 @RequestMapping("/api/rateplans")
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class RatePlanController {
     private final RatePlanService ratePlanService;
 
-    @PostMapping("/saveRatePlan")
+    @PostMapping("/save")
     public ResponseEntity<String> createRatePlan(@RequestBody RatePlanDTO dto) {
         log.info("POST /api/rateplans - Creating rate plan");
 

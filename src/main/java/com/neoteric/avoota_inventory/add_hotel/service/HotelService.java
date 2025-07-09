@@ -80,13 +80,17 @@ public class HotelService {
         }
     }
 
-    public List<HotelEntity> getAllHotels() {
+    public List<HotelDTO> getAllHotels() {
         try {
             log.info("Fetching all hotels");
-            return hotelRepository.findAll();
+            return hotelRepository.findAll()
+                    .stream()
+                    .map(hotelMapper::toDto)  // ✅ map entity → DTO
+                    .toList();
         } catch (Exception ex) {
             log.error("Exception occurred while fetching all hotels", ex);
             throw new RuntimeException("Error fetching all hotels", ex);
         }
     }
+
 }
