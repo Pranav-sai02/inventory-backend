@@ -1,27 +1,24 @@
 package com.neoteric.avoota_inventory.create_room.mapper;
 
-import com.neoteric.avoota_inventory.add_hotel.entity.HotelEntity;
+import com.neoteric.avoota_inventory.add_rateplans.mapper.RatePlanMapper;
 import com.neoteric.avoota_inventory.create_room.entity.RoomEntity;
 import com.neoteric.avoota_inventory.create_room.model.RoomDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class RoomMapper {
-    public static RoomEntity toEntity(RoomDTO dto, HotelEntity hotel) {
-        return RoomEntity.builder()
-                .roomId(dto.getRoomId())
-                .roomType(dto.getRoomType())
-                .roomView(dto.getRoomView())
-                .roomSize(dto.getRoomSize())
-                .sizeUnit(dto.getSizeUnit())
-                .roomName(dto.getRoomName())
-                .numberOfRooms(dto.getNumberOfRooms())
-                .description(dto.getDescription())
-                .hotel(hotel)
-                .build();
+    private final RatePlanMapper ratePlanMapper;
+
+    public RoomMapper(RatePlanMapper ratePlanMapper) {
+        this.ratePlanMapper = ratePlanMapper;
     }
 
-    public static RoomDTO toDTO(RoomEntity room) {
+    public RoomDTO toDTO(RoomEntity room) {
+        log.info("Mapping RoomEntity with ID: {}, RatePlans: {}",
+                room.getRoomId(),
+                room.getRatePlanEntityList() != null ? room.getRatePlanEntityList().size() : "null");
         return RoomDTO.builder()
                 .roomId(room.getRoomId())
                 .roomType(room.getRoomType())
@@ -32,6 +29,13 @@ public class RoomMapper {
                 .numberOfRooms(room.getNumberOfRooms())
                 .description(room.getDescription())
                 .hotelId(room.getHotel().getHotelId())
+                .ratePlans(
+                        room.getRatePlanEntityList() != null ?
+                                room.getRatePlanEntityList().stream()
+                                        .map(ratePlanMapper::toDTO)
+                                        .toList()
+                                : null
+                )
                 .build();
     }
 }

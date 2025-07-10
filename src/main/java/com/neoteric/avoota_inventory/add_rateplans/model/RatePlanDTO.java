@@ -12,4 +12,5 @@ public class RatePlanDTO {
     private String ratePlanName;
     private String mealPlan;
     private Long roomId;
+    private Long hotelId;
 }

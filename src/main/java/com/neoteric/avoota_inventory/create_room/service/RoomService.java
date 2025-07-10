@@ -1,14 +1,17 @@
 package com.neoteric.avoota_inventory.create_room.service;
 
 import com.neoteric.avoota_inventory.add_hotel.entity.HotelEntity;
+import com.neoteric.avoota_inventory.exception.HotelNotFoundException;
 import com.neoteric.avoota_inventory.add_hotel.repository.HotelRepository;
 import com.neoteric.avoota_inventory.create_room.entity.RoomEntity;
-import com.neoteric.avoota_inventory.create_room.exception.RoomNotFoundException;
+import com.neoteric.avoota_inventory.exception.RoomNotFoundException;
 import com.neoteric.avoota_inventory.create_room.mapper.RoomMapper;
 import com.neoteric.avoota_inventory.create_room.model.RoomDTO;
 import com.neoteric.avoota_inventory.create_room.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,32 +23,59 @@ import java.util.stream.Collectors;
 public class RoomService {
     private final RoomRepository roomRepository;
     private final HotelRepository hotelRepository;
+    private final RoomMapper roomMapper;
 
-    public RoomDTO createRoom(RoomDTO dto) {
-        log.info("Creating room for hotel ID: {}", dto.getHotelId());
+    public ResponseEntity<String> saveRoomDetails(RoomDTO dto) {
+        log.info("Entering to saveroomdetailsservie hoteid {} , ", dto.getHotelId());
+        try {
+            HotelEntity hotel = hotelRepository.findById(dto.getHotelId())
+                    .orElseThrow(() -> new HotelNotFoundException("Invalid hotel ID: " + dto.getHotelId()));
 
-        HotelEntity hotel = hotelRepository.findById(dto.getHotelId())
-                .orElseThrow(() -> new RoomNotFoundException("Hotel not found with ID: " + dto.getHotelId()));
+            RoomEntity entity = new RoomEntity();
+            entity.setHotel(hotel);
+            entity.setRoomType(dto.getRoomType());
+            entity.setRoomView(dto.getRoomView());
+            entity.setSizeUnit(dto.getSizeUnit());
+            entity.setRoomSize(dto.getRoomSize());
+            entity.setRoomName(dto.getRoomName());
+            entity.setNumberOfRooms(dto.getNumberOfRooms());
+            entity.setDescription(dto.getDescription());
+            roomRepository.save(entity);
+            log.info("Saved room for hotel ID = {}", dto.getHotelId());
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
 
-        RoomEntity room = RoomMapper.toEntity(dto, hotel);
-        RoomEntity saved = roomRepository.save(room);
+        } catch (Exception e) {
+            log.error("Failed to save room details: {}", e.getMessage(), e);
 
-        return RoomMapper.toDTO(saved);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
+    public ResponseEntity<RoomDTO> getRoomDetailsById(Long roomId) {
+        log.info("🔍 Entering getRoomDetailsById() for roomId = {}", roomId);
 
-    public RoomDTO getRoom(Long id) {
-        log.info("Fetching room by ID: {}", id);
-        RoomEntity room = roomRepository.findById(id)
-                .orElseThrow(() -> new RoomNotFoundException("Room not found with ID: " + id));
-        return RoomMapper.toDTO(room);
+        try {
+            RoomEntity entity = roomRepository.findById(roomId)
+                    .orElseThrow(() -> new RuntimeException("Room not found with ID: " + roomId));
+
+            RoomDTO dto = roomMapper.toDTO(entity);
+            log.info(" Room found for ID: {}", roomId);
+            return new ResponseEntity<>(dto, HttpStatus.OK);
+
+        } catch (RuntimeException e) {
+            log.warn(" Room not found: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            log.error(" Error while fetching room details: {}", e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     public List<RoomDTO> getRoomsByHotel(Long hotelId) {
         log.info("Fetching rooms for hotel ID: {}", hotelId);
         return roomRepository.findByHotelHotelId(hotelId)
                 .stream()
-                .map(RoomMapper::toDTO)
+                .map(roomMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -63,7 +93,7 @@ public class RoomService {
         room.setDescription(dto.getDescription());
 
         RoomEntity updated = roomRepository.save(room);
-        return RoomMapper.toDTO(updated);
+        return roomMapper.toDTO(updated);
     }
 
     public void deleteRoom(Long id) {

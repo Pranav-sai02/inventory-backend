@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "hotels",schema = "avoota")
+@Table(name = "hotels", schema = "avoota")
 public class HotelEntity {
     @Id
     @Column(name = "hotel_id")

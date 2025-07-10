@@ -1,10 +1,13 @@
 package com.neoteric.avoota_inventory.create_room.model;
 
+import com.neoteric.avoota_inventory.add_rateplans.model.RatePlanDTO;
 import com.neoteric.avoota_inventory.create_room.entity.SizeUnit;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -20,4 +23,5 @@ public class RoomDTO {
     private int numberOfRooms;
     private String description;
     private Long hotelId;
+    private List<RatePlanDTO> ratePlans;
 }

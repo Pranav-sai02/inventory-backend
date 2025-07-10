@@ -1,5 +1,6 @@
 package com.neoteric.avoota_inventory.add_rateplans.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.neoteric.avoota_inventory.create_room.entity.RoomEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,5 +23,8 @@ public class RatePlanEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id", nullable = false)
+    @JsonBackReference
     private RoomEntity room;
+
+
 }

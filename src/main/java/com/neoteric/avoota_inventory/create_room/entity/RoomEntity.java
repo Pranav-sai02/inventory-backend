@@ -1,10 +1,15 @@
 package com.neoteric.avoota_inventory.create_room.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.neoteric.avoota_inventory.add_hotel.entity.HotelEntity;
+import com.neoteric.avoota_inventory.add_rateplans.entity.RatePlanEntity;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "rooms", schema = "avoota")
@@ -43,6 +48,10 @@ public class RoomEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnoreProperties("rooms") // avoids loop
     private HotelEntity hotel;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<RatePlanEntity> ratePlanEntityList = new ArrayList<>();
 }

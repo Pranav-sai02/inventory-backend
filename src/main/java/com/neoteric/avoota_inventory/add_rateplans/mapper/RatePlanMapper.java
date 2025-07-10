@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RatePlanMapper {
-    public static RatePlanEntity toEntity(RatePlanDTO dto, RoomEntity room) {
+    public RatePlanEntity toEntity(RatePlanDTO dto, RoomEntity room) {
         return RatePlanEntity.builder()
                 .id(dto.getId())
                 .ratePlanName(dto.getRatePlanName())
@@ -16,12 +16,13 @@ public class RatePlanMapper {
                 .build();
     }
 
-    public static RatePlanDTO toDTO(RatePlanEntity ratePlan) {
+    public RatePlanDTO toDTO(RatePlanEntity ratePlan) {
         return RatePlanDTO.builder()
                 .id(ratePlan.getId())
                 .ratePlanName(ratePlan.getRatePlanName())
                 .mealPlan(ratePlan.getMealPlan())
                 .roomId(ratePlan.getRoom().getRoomId())
+                .hotelId(ratePlan.getRoom().getHotel().getHotelId())
                 .build();
     }
 }
