@@ -30,7 +30,7 @@ public class RoomController {
         return roomService.getRoomDetailsById(id);
     }
 
-    @GetMapping("/hetByHotel/{hotelId}")
+    @GetMapping("/getByHotel/{hotelId}")
     public List<RoomDTO> getRoomsByHotel(@PathVariable Long hotelId) {
         return roomService.getRoomsByHotel(hotelId);
     }
