@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class RatePlanPriceService {
+public class RatePlanPriceService { 
     private final RatePlanPriceRepository ratePlanPriceRepository;
     private final RoomsAvailabilityRepository availabilityRepository;
 
