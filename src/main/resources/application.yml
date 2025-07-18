@@ -2,17 +2,17 @@ spring:
   application:
     name: avoota_inventory
   datasource:
-    url: jdbc:mysql://localhost:3306/avoota
-    username: root
-    password: Count02
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
 
 server:
-  port: 8080
-  address: 0.0.0.0   # 👈 Add this to make the app accessible on LAN
+  port: ${PORT:8080}
+  address: 0.0.0.0  # Required on Render
 
 springdoc:
   swagger-ui:
