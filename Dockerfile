@@ -4,21 +4,25 @@ FROM openjdk:17-jdk-slim
 # ✅ Set working directory
 WORKDIR /app
 
-# ✅ Copy only necessary files first to leverage Docker cache
+# ✅ Copy necessary files first
 COPY .mvn .mvn
 COPY mvnw pom.xml ./
 
-# ✅ Preload dependencies (caching layer)
+# ✅ Make mvnw executable (this line fixes your issue)
+RUN chmod +x mvnw
+
+# ✅ Preload dependencies
 RUN ./mvnw dependency:go-offline -B
 
-# ✅ Now copy the full source code
+# ✅ Copy full project
 COPY . .
 
 # ✅ Build the Spring Boot app
 RUN ./mvnw clean package -DskipTests
 
-# ✅ Expose port 8080 (Render uses PORT env but this is fine)
+# ✅ Expose port
 EXPOSE 8080
 
-# ✅ Run the fat JAR (the runnable one)
-CMD ["java", "-jar", "avoota_inventory-0.0.1-SNAPSHOT.jar"]
+# ✅ Run the app
+CMD ["java", "-jar", "target/avoota_inventory-0.0.1-SNAPSHOT.jar"]
+
